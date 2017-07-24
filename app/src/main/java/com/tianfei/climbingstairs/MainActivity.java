@@ -14,6 +14,9 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.os.Message;
 
 public class MainActivity extends AppCompatActivity {
@@ -79,7 +82,13 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String path = "http://192.168.0.12/login.php";
-                    URL url = new URL(path);
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("username", acc);
+                    params.put("password", pwd);
+                    String response = HttpRequestUtil.PostRequest(path,params,null);
+                    System.out.println(response);
+
+                    /*URL url = new URL(path);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("User-Agent", "Mozilla/5.0(compatible;MSIE 9.0;Windows NT 6.1;Trident/5.0)");
@@ -103,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         Message mas = Message.obtain();
                         mas.what = ERROR;
                         handler.sendMessage(mas);
-                    }
+                    }*/
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     Message mas = Message.obtain();
