@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ClimbingStairs</string>
+    <string name="title_activity_user">ClimbingStairs(Test)</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="user_name">FrankT</string>string>
 </resources>
