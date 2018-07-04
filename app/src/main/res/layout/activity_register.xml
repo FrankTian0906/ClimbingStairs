@@ -56,9 +56,9 @@
         android:layout_height="wrap_content"
         android:text="Gender:"
         android:textSize="20sp"
-        android:layout_marginLeft="41dp"
+        android:layout_marginLeft="22dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="49dp"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
@@ -67,9 +67,9 @@
         android:layout_height="wrap_content"
         android:text="Height:"
         android:textSize="20sp"
-        android:layout_marginLeft="46dp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="73dp"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
@@ -78,10 +78,10 @@
         android:layout_height="wrap_content"
         android:text="Weight:"
         android:textSize="20sp"
-        android:layout_marginLeft="42dp"
+        android:layout_marginLeft="217dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        android:layout_marginTop="73dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
         android:id="@+id/RegAccount"
@@ -130,25 +130,35 @@
 
     <EditText
         android:id="@+id/RegHeight"
-        android:layout_width="92dp"
-        android:layout_height="38dp"
+        android:layout_width="93dp"
+        android:layout_height="53dp"
         android:ems="10"
         android:inputType="numberDecimal"
         app:layout_constraintLeft_toRightOf="@+id/textView9"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="54dp"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
         android:id="@+id/RegWeight"
-        android:layout_width="92dp"
-        android:layout_height="41dp"
+        android:layout_width="88dp"
+        android:layout_height="51dp"
         android:ems="10"
         android:inputType="numberDecimal"
         app:layout_constraintLeft_toRightOf="@+id/textView10"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="33dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        android:layout_marginTop="54dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+    <EditText
+        android:id="@+id/RegAge"
+        android:layout_width="86dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintLeft_toRightOf="@+id/textView14"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="41dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView11"
@@ -156,7 +166,7 @@
         android:layout_height="wrap_content"
         android:text="CM"
         android:textSize="20sp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="73dp"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:layout_constraintLeft_toRightOf="@+id/RegHeight"
         android:layout_marginLeft="0dp" />
@@ -165,48 +175,68 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="KG"
+        android:text="LB"
         android:textSize="20sp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        android:layout_marginTop="73dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:layout_constraintLeft_toRightOf="@+id/RegWeight"
-        android:layout_marginLeft="0dp" />
+        android:layout_marginLeft="-1dp" />
 
     <Button
         android:id="@+id/addUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="418dp"
+        android:layout_height="59dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/holo_green_dark"
         android:text="Register!"
         android:textColor="@android:color/white"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <RadioGroup
+    <TextView
+        android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="41dp"
-        android:orientation="horizontal"
+        android:layout_marginLeft="151dp"
+        android:layout_marginTop="49dp"
+        android:text="Age:"
+        android:textSize="20sp"
         app:layout_constraintLeft_toRightOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView7">
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <RadioGroup
+        android:id="@+id/GenderGroup"
+        android:layout_width="108dp"
+        android:layout_height="116dp"
+        app:layout_constraintLeft_toRightOf="@+id/textView8"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" >
 
         <RadioButton
             android:id="@+id/Male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="true"
-            android:text="Male"
-            android:textSize="20sp" />
+            android:text="male"
+            android:textSize="20dp"/>
 
         <RadioButton
             android:id="@+id/Female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:text="Female"
-            android:textSize="20sp" />
+            android:layout_weight="1"
+            android:text="female"
+            android:textSize="20dp"/>
     </RadioGroup>
+
+
 </android.support.constraint.ConstraintLayout>

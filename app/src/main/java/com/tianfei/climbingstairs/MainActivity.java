@@ -9,54 +9,88 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.net.URL;
 import java.net.HttpURLConnection;
-import java.io.InputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.os.Message;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
+
     protected static final int ERROR = 2;
     protected static final int SUCCESS = 1;
+    protected static final String path = "http://192.168.137.1/login.php";
 
+    //private Message message;
     private EditText account;
     private EditText password;
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
                 case SUCCESS:
-                    Toast.makeText(MainActivity.this,(String)msg.obj, Toast.LENGTH_SHORT).show();
+                    String[] result =(String[])msg.obj;
+
+                    for(int i = 0;i< result.length;i++){
+                        System.out.println(i + " : "+result[i]);
+                    }
+                    if(null!=result[1]){
+
+                        if(result[1].equals("true")) {
+                            System.out.println("Welcome page!");
+                            Toast.makeText(MainActivity.this,"Welcome " + result[5], Toast.LENGTH_SHORT).show();
+                            System.out.println("param push!");
+                            Intent intent = new Intent(MainActivity.this, UserActivity.class)
+                                   .putExtra("username", result[0])
+                                    .putExtra("name",result[5])
+                                    .putExtra("weight", result[2])
+                                   .putExtra("height",result[3])
+                                   .putExtra("age",result[4])
+                                   .putExtra("gender",result[6]);
+                            startActivity(intent);
+                            MainActivity.this.finish();
+                        }
+
+                        if(result[1].equals("false"))
+                            Toast.makeText(MainActivity.this,"Sorry, didn't find the account!", Toast.LENGTH_SHORT).show();
+                    }
                     break;
 
                 case ERROR:
-                    Toast.makeText(MainActivity.this,"Fail!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"Parse failed! Please check the network.",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         account = (EditText)findViewById(R.id.account);
         password = (EditText)findViewById(R.id.password);
+
+        //login button
+
         Button login = (Button)findViewById(R.id.logButton);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("RUN!--------------------");
                 login(v);
-               //Intent intent = new Intent();
-                //intent.setClass(MainActivity.this, TestActivity.class);
+                //Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                //intent.setClass((MainActivity.this, UserActivity.class);
                 //startActivity(intent);
             }
+
         });
+
+        //register button
 
         Button register = (Button)findViewById(R.id.toRegister);
         register.setOnClickListener(new View.OnClickListener() {
@@ -69,57 +103,74 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //TODO **login method**
+
     public void login(View view){
         final String acc = account.getText().toString();
         final String pwd = password.getText().toString();
-
+        //final boolean success;
+        // are the text empty
         if(TextUtils.isEmpty(acc) || TextUtils.isEmpty(pwd)){
             Toast.makeText(this, "Account or password is empty!", Toast.LENGTH_SHORT).show();
-            return;
+            return ;
         }
+
+        //connect to the server
 
         new Thread(){
             public void run() {
                 try {
-                    String path = "http://192.168.0.12/login.php";
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("username", acc);
                     params.put("password", pwd);
                     String response = HttpRequestUtil.PostRequest(path,params,null);
+
+                    //parse json data
+                    try {
+                        JSONObject jsonObj = new JSONObject(response);
+                        System.out.println(jsonObj);
+                        String success = jsonObj.getString("Sresult");
+                        String username = jsonObj.getString("Susername");
+                        String height = jsonObj.getString("Sheight");
+                        String weight = jsonObj.getString("Sweight");
+                        String age = jsonObj.getString("Sage");
+                        String name = jsonObj.getString("Sname");
+                        String gender = jsonObj.getString("Sgender");
+
+                        // push the data from thread to handler
+                        Message mas = new Message();
+                        mas.what = SUCCESS;//successfully connect
+                        String[] result =new String[7];
+                        result[0] = username;
+                        result[1] = success;
+                        result[2] = height;
+                        result[3] = weight;
+                        result[4] = age;
+                        result[5] = name;
+                        result[6] = gender;
+
+                        mas.obj = result;//参数
+                        handler.sendMessage(mas);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
                     System.out.println(response);
 
-                    /*URL url = new URL(path);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("User-Agent", "Mozilla/5.0(compatible;MSIE 9.0;Windows NT 6.1;Trident/5.0)");
-                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    String data = "username= " + acc + "&password = " + pwd + "&button=";
-                    conn.setRequestProperty("Content-Length", data.length()+"");
-                    conn.setDoOutput(true);
-                    byte[] bytes = data.getBytes();
-                    conn.getOutputStream().write(bytes);
-                    int code = conn.getResponseCode();
-                    System.out.println("RESPONSE CODE：--------------------" + code);
-                    if (code == 200) {
-                        InputStream is = conn.getInputStream();
-                        String result = StreamTools.readStream(is);
-                        Message mas = Message.obtain();
-                        mas.what = SUCCESS;
-                        mas.obj = result;
-                        handler.sendMessage(mas);
-                    }
-                    else {
-                        Message mas = Message.obtain();
-                        mas.what = ERROR;
-                        handler.sendMessage(mas);
-                    }*/
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
+                    //fail to connect
                     Message mas = Message.obtain();
                     mas.what = ERROR;
                     handler.sendMessage(mas);
                 }
             }
+
         }.start();
+
     }
+
 }
